@@ -1,0 +1,20 @@
+Metadata-Version: 1.1
+Name: eveapi
+Version: 1.2.6
+Summary: Python library for accessing the EVE Online API.
+Home-page: https://github.com/ntt/eveapi
+Author: Jamie van den Berge
+Author-email: jamie@hlekkir.com
+License: UNKNOWN
+Description: UNKNOWN
+Keywords: eve-online,api
+Platform: any
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Programming Language :: Python
+Classifier: Programming Language :: Python :: 2.4
+Classifier: Programming Language :: Python :: 2.5
+Classifier: Programming Language :: Python :: 2.6
+Classifier: Programming Language :: Python :: 2.7
+Classifier: Topic :: Games/Entertainment
