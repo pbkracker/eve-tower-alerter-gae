@@ -34,5 +34,8 @@ nosetests.xml
 .project
 .pydevproject
 
+# Stupid breadcrumbs
+.DS_Store
+
 # Credentials
 config.ini
