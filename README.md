@@ -1,16 +1,17 @@
 eve-tower-alerter-gae
 =====================
 
-This project uses the Eve Online API to look for Tower Alert notifications and sends notifications.
+This project uses the Eve Online API to look for Tower Alert notifications and sends email alerts.
+It runs in the Google App Engine.
 
-Todo
-----
-*  Notifications do not seem to go away after I pull them.  This may be a caching issue.
-*  Alerts are only printed out. No emails are actually sent.
-*  Move the project to the Google App Engine and use a cron.yaml to schedule notification checks.
+The cron.yaml instructs google to hit /check once every 30 minutes.  The handler that responds to requests to /check then talks to the eve API to determine if there are any notifications, and sends out emails.
+
+Move sample_config.ini to config.ini and fill in your values.
 
 Sample Output
 -------------
+    ./eve_functions.py
+    # This file can be run on the command line or used as a library.
     Found Relavent Notification! 44919XXXX 75 100XXXX 1390068060 0
     Sending email to...
     To: blabblah@blahblah.com
