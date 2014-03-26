@@ -13,6 +13,7 @@ from copy import deepcopy
 from google.appengine.ext import db
 from google.appengine.api import mail
 
+
 class EveTowerAlert(db.Model):
     """Keeps track of which notifications have been emailed."""
     nid = db.StringProperty()
@@ -22,12 +23,14 @@ class EveTowerAlert(db.Model):
 #     """Constructs a Datastore key for a Guestbook entity with guestbook_name."""
 #     return db.Key('RedditEntity')
 
+
 class MainPage(webapp2.RequestHandler):
 
   def get(self):
     print "HAI THERE!"
     self.response.headers['Content-Type'] = 'text/plain'
     self.response.write('Hello, World!')
+
 
 class EveTowerAlerter(webapp2.RequestHandler):
 
@@ -53,15 +56,16 @@ class EveTowerAlerter(webapp2.RequestHandler):
 
     for account in messages:
       # send email, then add DB entry
-      mail.send_mail(developer_email, messages[account]['to'], 
-        messages[account]['subject'], messages[account]['body'])
+      mail.send_mail(developer_email,
+                     messages[account]['to'],
+                     messages[account]['subject'],
+                     messages[account]['body'])
       for character in notifications[account]:
         for notid in notifications[account][character]:
           print "Adding {} to our DB so we dont send it again.".format(notid)
           eve_alert = EveTowerAlert()
           eve_alert.nid = str(notid)
           eve_alert.put()
-
 
   def get(self):
     accounts, noti_types, developer_email = eve_functions.read_config()
@@ -73,7 +77,7 @@ class EveTowerAlerter(webapp2.RequestHandler):
       accounts, notifications)
     messages = eve_functions.prepare_alerts(accounts, notifications)
     self._send_alert_messages(messages, notifications, developer_email)
-    
+
     self.response.headers['Content-Type'] = 'text/plain'
     self.response.write('Check Complete.\n')
     # self.response.write('Accounts:\n')

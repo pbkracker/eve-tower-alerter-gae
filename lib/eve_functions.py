@@ -9,6 +9,7 @@ sys.path.append('lib/eveapi-1.2.6/')
 import eveapi
 import ConfigParser
 
+
 def read_config():
   Config = ConfigParser.ConfigParser()
   Config.read("config.ini")
@@ -18,27 +19,28 @@ def read_config():
     if section.startswith("Account"):
       account = section
       accounts[account] = {
-        "key_id": Config.get(account,"key_id"),
-        "v_code": Config.get(account,"v_code"),
-        "email": Config.get(account,"email")
+        "key_id": Config.get(account, "key_id"),
+        "v_code": Config.get(account, "v_code"),
+        "email": Config.get(account, "email")
       }
     elif section == 'NotificationTypes':
-      typeIDs = Config.get(section,"typeIDs").split(",")
-      notiNames = Config.get(section,"notiNames").split(",")
-      index=0
+      typeIDs = Config.get(section, "typeIDs").split(",")
+      notiNames = Config.get(section, "notiNames").split(",")
+      index = 0
       for typeID in typeIDs:
         noti_types[int(typeID)] = notiNames[index]
         index = index + 1
     elif section == 'DeveloperEmail':
-      developer_email = Config.get(section,"email")
+      developer_email = Config.get(section, "email")
   return accounts, noti_types, developer_email
+
 
 def get_notification_headers(accounts):
   api = eveapi.EVEAPIConnection()
   notifications = {}
   for account in accounts:
     auth = api.auth(
-      keyID=accounts[account]["key_id"], 
+      keyID=accounts[account]["key_id"],
       vCode=accounts[account]["v_code"])
     result2 = auth.account.Characters()
     notifications[account] = {}
@@ -47,7 +49,7 @@ def get_notification_headers(accounts):
       result = auth.char.Notifications(
         characterID=character.characterID)
       result = result.notifications
-      for notid,typeid,senderid,sentdate,read in result.Select(
+      for notid, typeid, senderid, sentdate, read in result.Select(
         'notificationID', 'typeID', 'senderID', 'sentDate', 'read'):
         notifications[account][character.characterID][notid] = {
           'notificationID': notid,
@@ -69,13 +71,14 @@ def filter_notification_headers(notifications, noti_types):
   # }
 
   # n_headers = {}
-
+  ignore_list = []
   for account in notifications:
     for character in notifications[account]:
       for notid in notifications[account][character]:
         n_struct = notifications[account][character][notid]
         if n_struct['typeID'] not in noti_types.keys():
           print "Ignoring Notification because of type. {}".format(n_struct)
+          ignore_list.append((account, character, notid))
           continue
         print "Found Relavent Notification! {}".format(n_struct)
         n_struct['typeName'] = noti_types[n_struct['typeID']]
@@ -87,7 +90,11 @@ def filter_notification_headers(notifications, noti_types):
         # else:
         #   n_headers[account][character] += ",{}".format(str(notid))
 
+  for (account, character, notid) in ignore_list:
+    del notifications[account][character][notid]
+
   return notifications
+
 
 def retrieve_full_notification_text(accounts, notifications):
   # [account][characterID][notificationID] = {
@@ -112,6 +119,7 @@ def retrieve_full_notification_text(accounts, notifications):
           notifications[account][character][notid]['text'] = result_row['data']
 
   return notifications
+
 
 def prepare_alerts(accounts, notifications):
   # [account][characterID][notificationID] = {
@@ -156,4 +164,4 @@ if __name__ == "__main__":
   import json
   print(json.dumps(messages, indent=2))
 
-  
+
