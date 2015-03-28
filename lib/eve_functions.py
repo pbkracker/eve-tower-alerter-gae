@@ -4,9 +4,9 @@ import time
 # Just for debugging. Remove for GAE.
 #sys.path.append("/usr/local/lib/python2.7/site-packages")
 import sys
-sys.path.append('lib/eveapi-1.2.6/')
+# sys.path.append('lib/eveapi-1.2.6/')
 
-import eveapi
+import eveapi.eveapi as eveapi
 import ConfigParser
 
 

@@ -4,10 +4,11 @@ __author__ = 'opticrealm@gmail.com (Patrick Kelley)'
 
 # Add the library location to the path
 import sys
-sys.path.insert(0, 'lib')
+# sys.path.insert(0, 'lib')
 
 import webapp2
-import eve_functions
+import lib.eve_functions as eve_functions
+# import eve_functions
 import json
 from copy import deepcopy
 from google.appengine.ext import db
