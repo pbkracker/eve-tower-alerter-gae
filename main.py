@@ -30,7 +30,7 @@ class MainPage(webapp2.RequestHandler):
   def get(self):
     print "HAI THERE!"
     self.response.headers['Content-Type'] = 'text/plain'
-    self.response.write('Hello, World!')
+    self.response.write('Hello, Patrick!')
 
 
 class EveTowerAlerter(webapp2.RequestHandler):
